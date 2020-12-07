@@ -24,16 +24,30 @@ def extract_to(url, path):
 
 def execute_batch_x32(path):
     temp_bat_path = generate_temp_bat_name()
-    with open(generate_temp_bat_name(), 'wt') as f:
+    with open(temp_bat_path, 'wt') as f:
         f.write(f'call {path_prompt_x32}\n')
         f.write(f'call {path}\n')      
     subprocess.call([temp_bat_path])
     
 def execute_batch_x64(path):
     temp_bat_path = generate_temp_bat_name()
-    with open(generate_temp_bat_name(), 'wt') as f:
+    with open(temp_bat_path, 'wt') as f:
         f.write(f'call {path_prompt_x64}\n')
         f.write(f'call {path}\n')      
+    subprocess.call([temp_bat_path])
+
+def execute_batch_x32_inst(inst):
+    temp_bat_path = generate_temp_bat_name()
+    with open(temp_bat_path, 'wt') as f:
+        f.write(f'call {path_prompt_x32}\n')
+        f.write(f'{inst}\n')      
+    subprocess.call([temp_bat_path])
+    
+def execute_batch_x64_inst(inst):
+    temp_bat_path = generate_temp_bat_name()
+    with open(temp_bat_path, 'wt') as f:
+        f.write(f'call {path_prompt_x64}\n')
+        f.write(f'{inst}\n')      
     subprocess.call([temp_bat_path])
 
 def main():
