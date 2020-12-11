@@ -68,8 +68,8 @@ def execute_batch_x64_inst(inst):
 def main():
     # Make Directories
     print('[+] Making Directories')
-    print('[-] MinGW Directory')
-    createFolder(path_main_dir+'/MinGW')
+    #print('[-] MinGW Directory')
+    #createFolder(path_main_dir+'/MinGW')
     print('[-] SDL Directory')
     createFolder(path_main_dir+'/SDL')
     print('[-] SSL Directory')
@@ -81,9 +81,9 @@ def main():
     print('[+] Making Directories Done')
 
     # Installation Part
-    print('[+] Install Required Programs')
-    print('[-] Install MinGW')
-    extract_to(url_mingw, path_main_dir+'/MinGW')
+    #print('[+] Install Required Programs')
+    #print('[-] Install MinGW')
+    #extract_to(url_mingw, path_main_dir+'/MinGW')
     
     print('[-] Install SDL')
     extract_to(url_sdl, path_main_dir+'/SDL')
