@@ -1,13 +1,8 @@
 @echo off
 
-echo [+]Initialization(You must need to Check these directories)
-SET DEFAULT_DIR=C:\VBoxCompile
-SET SSL64_DIR=C:\VBoxCompile\SSL\OpenSSL-Win64
-SET CURL_DIR=C:\VBoxCompile\curl\curl-7.64.1
-SET QT_DIR=C:\VBoxCompile\Qt\qt-everywhere-opensource-src-5.6.3
+call base_config.bat
 
-echo [-]cURL x64
-
+echo [+]cURL x64
 echo [*]cURL x64 Build
 cd /d %CURL_DIR%\winbuild
 nmake /f Makefile.vc mode=dll WITH_SSL=static DEBUG=no MACHINE=x64 SSL_PATH=%SSL64_DIR% ENABLE_SSPI=no ENABLE_WINSSL=no ENABLE_IDN=no

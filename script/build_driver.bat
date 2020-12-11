@@ -1,9 +1,7 @@
 @echo off
 
-echo [+]Initialization(You must need to Check these directories)
-SET VBOX_DIR=C:\VBoxCompile\VirtualBox-6.1.16
+call base_config.bat
 
-::make mycert
 echo [+]Certification
 cd %VBOX_DIR%
 set PATH=%PATH%;%WINDDK_DIR%;

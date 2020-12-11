@@ -1,13 +1,7 @@
 @echo off
 
-echo [+]Initialization(You must need to Check these directories)
-SET DEFAULT_DIR=C:\VBoxCompile
-SET SSL32_DIR=C:\VBoxCompile\SSL\OpenSSL-Win32
-SET CURL_DIR=C:\VBoxCompile\curl\curl-7.64.1
+call base_config.bat
 
-:: Run this build.bat in Visual Studio Command Prompt (2010) in Administrator
-
-:: CURL x32,x64 Compile
 echo [+]cURL
 
 echo [-]cURL Initialization
