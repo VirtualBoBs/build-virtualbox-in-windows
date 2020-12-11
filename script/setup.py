@@ -107,18 +107,19 @@ def main():
     print('[+] Install Required Programs Done')
     
     # Execution Part
-    os.chdir(path_main_dir+'/scripts')
+    os.chdir(path_main_dir+'/script')
     execute_batch_x32('buildx32.bat')
     execute_batch_x64('buildx64.bat')
     
     os.chdir(path_main_dir+'/Qt/qt-everywhere-opensource-src-5.6.3')
     execute_batch_x64_inst('nmake\nnmake install')
-    os.chdir(path_main_dir+'/scripts')
-    execute_batch_x32('build_driver.bat')
     
+    os.chdir(path_main_dir+'/script')
+    execute_batch_x32('build_driver.bat')
     execute_batch_x32('build_vbox.bat')
+    
     os.chdir(path_vbox_dir)
-    shutil.copy(path_main_dir+'/scripts/LocalConfig.kmk',path_vbox_dir)
+    shutil.copy(path_main_dir+'/script/LocalConfig.kmk', path_vbox_dir)
     execute_batch_x32_inst('call env.bat\nkmk')
     
     os.chdir(path_vbox_dir+'/out/win.amd64/release/bin')
