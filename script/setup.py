@@ -30,7 +30,8 @@ def create_folder(dir):
         if not os.path.exists(dir):
             os.makedirs(dir)
     except OSError:
-        print('[*] Error: Creating directory '+dir+'. It is already exist')
+        print(f'[*] Error: Could not create the directory {dir}')
+        exit(1)
 
 def generate_temp_name():
     return 'temp.bin'
@@ -71,8 +72,8 @@ def execute_batch_x64(path):
 
 def main():
     if is_admin() == False:
-        print('[+] Please run this script on root')
-        return
+        print('[*] Error: Please run this script on the root privilege')
+        exit(1)
 
     # Make Directories
     print('[+] Making Directories')
