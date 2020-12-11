@@ -6,129 +6,64 @@ url_curl        = r'https://curl.se/download/curl-7.64.1.zip'
 url_qt5         = r'http://download.qt.io/new_archive/qt/5.6/5.6.3/single/qt-everywhere-opensource-src-5.6.3.zip'
 url_vbox        = r'https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16.tar.bz2'
 
-path_prompt_x32 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"'
-path_prompt_x64 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"'
-path_main_dir   = r'C:\VBoxCompile'
-path_vbox_dir   = r'C:\VBoxCompile\VirtualBox-6.1.16' # you should install this first and input directory.
-
-import subprocess
-from urllib import request
-import zipfile
-import os, shutil
-import ctypes
-import py7zr
-
-def is_admin():
-    try:
-        is_admin = os.getuid() == 0
-    except AttributeError:
-        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
-    return is_admin
-
-def create_folder(dir):
-    try:
-        if not os.path.exists(dir):
-            os.makedirs(dir)
-    except OSError:
-        print(f'[*] Error: Could not create the directory {dir}')
-        exit(1)
-
-def generate_temp_name():
-    return 'temp.bin'
-
-def generate_temp_bat_name():
-    return 'temp.bat'
-
-def extract_to(url, path, is_7z = False):
-    temp_path = generate_temp_name()
-    request.urlretrieve(url, temp_path)
-
-    if is_7z:
-        f = py7zr.SevenZipFile(temp_path)
-    else:
-    f = zipfile.ZipFile(temp_path)
-    f.extractall(path)
-    f.close()
-
-def execute_batch_x32_inst(inst):
-    temp_bat_path = generate_temp_bat_name()
-    with open(temp_bat_path, 'wt') as f:
-        f.write(f'call {path_prompt_x32}\n')
-        f.write(f'{inst}\n')      
-    subprocess.call([temp_bat_path])
-    
-def execute_batch_x32(path):
-    execute_batch_x32_inst(f'call {path}')
-    
-def execute_batch_x64_inst(inst):
-    temp_bat_path = generate_temp_bat_name()
-    with open(temp_bat_path, 'wt') as f:
-        f.write(f'call {path_prompt_x64}\n')
-        f.write(f'{inst}\n')      
-    subprocess.call([temp_bat_path])
-
-def execute_batch_x64(path):
-    execute_batch_x64_inst(f'call {path}')
+from tool import *
 
 def main():
     if is_admin() == False:
         print('[*] Error: Please run this script on the root privilege')
         exit(1)
 
-    # Make Directories
-    print('[+] Making Directories')
-    print('[-] MinGW Directory')
+    # Create directories
+    print('[+] Create directories')
     create_folder(f'{path_main_dir}/MinGW')
-    print('[-] SDL Directory')
     create_folder(f'{path_main_dir}/SDL')
-    print('[-] SSL Directory')
     create_folder(f'{path_main_dir}/SSL')
-    print('[-] curl Directory')
     create_folder(f'{path_main_dir}/curl')
-    print('[-] Qt Directory')
     create_folder(f'{path_main_dir}/Qt')
-    print('[+] Making Directories Done')
 
-    # Installation Part
-    print('[+] Install Required Programs')
-    
-    print('[-] Install MinGW')
+    # Download pre-requisites
+    print('[+] Set up libraries')
+    print('[-] Copy SSL')
+    shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
+    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
+    print('[-] Download MinGW')
     extract_to(url_mingw, f'{path_main_dir}/MinGW', is_7z = True)
-    
-    print('[-] Install SDL')
+    print('[-] Download SDL')
     extract_to(url_sdl, f'{path_main_dir}/SDL')
     shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')
     shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/lib/x64', f'{path_main_dir}/SDL/lib')
-
-    print('[-] Install SSLs')
-    # you should run url_sslx64,x32 before these command starts
-    shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
-    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
-
-    print('[-] Install cURL')
+    print('[-] Download cURL')
     extract_to(url_curl, f'{path_main_dir}/curl')
-
-    print('[-] Install qt5 (It will take a long long time. Be Patience.)')
+    print('[-] Download Qt5')
     extract_to(url_qt5, f'{path_main_dir}/Qt')
-    print('[+] Install Required Programs Done')
     
     # Execution Part
-    os.chdir(f'{path_main_dir}/script')
+    os.chdir(path_curr_dir)
     execute_batch_x32('build_x32.bat')
     execute_batch_x64('build_x64.bat')
     
     os.chdir(f'{path_main_dir}/Qt/qt-everywhere-opensource-src-5.6.3')
     execute_batch_x64_inst('nmake\nnmake install')
     
-    os.chdir(f'{path_main_dir}/script')
+    os.chdir(path_curr_dir)
+    # Register certification
     execute_batch_x32('build_driver.bat')
+
+    # Configure VBox build
     execute_batch_x32('build_vbox.bat')
-    
+
+    # Copy local config
     os.chdir(path_vbox_dir)
-    shutil.copy(f'{path_main_dir}/script/LocalConfig.kmk', path_vbox_dir)
+    shutil.copy(f'{path_curr_dir}/LocalConfig.kmk', path_vbox_dir)
+
+    # Build VBox
     execute_batch_x32_inst('call env.bat\nkmk')
     
-    os.chdir(path_vbox_dir+'/out/win.amd64/release/bin')
-    execute_batch_x32_inst(f'SET PATH=%PATH%;{path_main_dir}\\curl\\x64\nSET PATH=%PATH%;{path_main_dir}\\curl\\x32\ncall comregister.cmd\nloadall.cmd\nSET PATH=%PATH%;{path_main_dir}\\Qt\\qt5-x64\\bin\nVirtualBox.exe')
+    # Load drivers
+    os.chdir(f'{path_vbox_dir}/out/win.amd64/release/bin')
+    execute_batch_x32_inst(f'SET PATH=%PATH%;{path_main_dir}\\curl\\x64\nSET PATH=%PATH%;{path_main_dir}\\curl\\x32\ncall comregister.cmd\nloadall.cmd')
+
+    # Execute VBox
+    # execute_batch_x32_inst(f'SET PATH=%PATH%;{path_main_dir}\\Qt\\qt5-x64\\bin\nVirtualBox.exe')
 
 main()
