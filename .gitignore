@@ -1,0 +1,5 @@
+bin
+
+script/temp.*
+script/__pycache__
+
