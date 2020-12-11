@@ -31,5 +31,3 @@ IF EXIST %DEFAULT_DIR%\curl\x32\include echo    -Include Files OK
 
 echo [-]Cleaning...
 nmake /f Makefile.vc mode=dll clean
-
-echo [+]buildx32.bat finished. Run buildx64.bat with Visual Studio x64 Win64 Command Prompt (2010).
