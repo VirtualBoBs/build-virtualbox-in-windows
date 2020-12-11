@@ -15,6 +15,14 @@ import subprocess
 from urllib import request
 import zipfile
 import os, shutil
+import ctypes
+
+def is_admin():
+    try:
+        is_admin = os.getuid() == 0
+    except AttributeError:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+    return is_admin
 
 def createFolder(dir):
     try:
@@ -66,6 +74,10 @@ def execute_batch_x64_inst(inst):
     subprocess.call([temp_bat_path])
 
 def main():
+    if is_admin() == False:
+        print('[+] Please run this script on root')
+        return
+
     # Make Directories
     print('[+] Making Directories')
     #print('[-] MinGW Directory')
