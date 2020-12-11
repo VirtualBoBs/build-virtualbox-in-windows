@@ -16,6 +16,7 @@ from urllib import request
 import zipfile
 import os, shutil
 import ctypes
+import py7zr
 
 def is_admin():
     try:
@@ -37,10 +38,13 @@ def generate_temp_name():
 def generate_temp_bat_name():
     return 'temp.bat'
 
-def extract_to(url, path):
+def extract_to(url, path, is_7z = False):
     temp_path = generate_temp_name()
     request.urlretrieve(url, temp_path)
 
+    if is_7z:
+        f = py7zr.SevenZipFile(temp_path)
+    else:
     f = zipfile.ZipFile(temp_path)
     f.extractall(path)
     f.close()
@@ -72,8 +76,8 @@ def main():
 
     # Make Directories
     print('[+] Making Directories')
-    #print('[-] MinGW Directory')
-    #createFolder(path_main_dir+'/MinGW')
+    print('[-] MinGW Directory')
+    create_folder(f'{path_main_dir}/MinGW')
     print('[-] SDL Directory')
     create_folder(f'{path_main_dir}/SDL')
     print('[-] SSL Directory')
@@ -85,9 +89,10 @@ def main():
     print('[+] Making Directories Done')
 
     # Installation Part
-    #print('[+] Install Required Programs')
-    #print('[-] Install MinGW')
-    #extract_to(url_mingw, path_main_dir+'/MinGW')
+    print('[+] Install Required Programs')
+    
+    print('[-] Install MinGW')
+    extract_to(url_mingw, f'{path_main_dir}/MinGW', is_7z = True)
     
     print('[-] Install SDL')
     extract_to(url_sdl, f'{path_main_dir}/SDL')
