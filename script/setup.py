@@ -75,13 +75,13 @@ def main():
     #print('[-] MinGW Directory')
     #createFolder(path_main_dir+'/MinGW')
     print('[-] SDL Directory')
-    create_folder(path_main_dir+'/SDL')
+    create_folder(f'{path_main_dir}/SDL')
     print('[-] SSL Directory')
-    create_folder(path_main_dir+'/SSL')
+    create_folder(f'{path_main_dir}/SSL')
     print('[-] curl Directory')
-    create_folder(path_main_dir+'/curl')
+    create_folder(f'{path_main_dir}/curl')
     print('[-] Qt Directory')
-    create_folder(path_main_dir+'/Qt')
+    create_folder(f'{path_main_dir}/Qt')
     print('[+] Making Directories Done')
 
     # Installation Part
@@ -90,39 +90,39 @@ def main():
     #extract_to(url_mingw, path_main_dir+'/MinGW')
     
     print('[-] Install SDL')
-    extract_to(url_sdl, path_main_dir+'/SDL')
-    shutil.copytree(path_main_dir+'/SDL/SDL-1.2.15/include',path_main_dir+'/SDL/include')
-    shutil.copytree(path_main_dir+'/SDL/SDL-1.2.15/lib/x64',path_main_dir+'/SDL/lib')
+    extract_to(url_sdl, f'{path_main_dir}/SDL')
+    shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')
+    shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/lib/x64', f'{path_main_dir}/SDL/lib')
 
     print('[-] Install SSLs')
     # you should run url_sslx64,x32 before these command starts
-    shutil.copytree('C:/Program Files/OpenSSL-Win64',path_main_dir+'/SSL/OpenSSL-Win64')
-    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32',path_main_dir+'/SSL/OpenSSL-Win32')
+    shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
+    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
 
     print('[-] Install cURL')
-    extract_to(url_curl, path_main_dir+'/curl')
+    extract_to(url_curl, f'{path_main_dir}/curl')
 
     print('[-] Install qt5 (It will take a long long time. Be Patience.)')
-    extract_to(url_qt5, path_main_dir+'/Qt')
+    extract_to(url_qt5, f'{path_main_dir}/Qt')
     print('[+] Install Required Programs Done')
     
     # Execution Part
-    os.chdir(path_main_dir+'/script')
+    os.chdir(f'{path_main_dir}/script')
     execute_batch_x32('buildx32.bat')
     execute_batch_x64('buildx64.bat')
     
-    os.chdir(path_main_dir+'/Qt/qt-everywhere-opensource-src-5.6.3')
+    os.chdir(f'{path_main_dir}/Qt/qt-everywhere-opensource-src-5.6.3')
     execute_batch_x64_inst('nmake\nnmake install')
     
-    os.chdir(path_main_dir+'/script')
+    os.chdir(f'{path_main_dir}/script')
     execute_batch_x32('build_driver.bat')
     execute_batch_x32('build_vbox.bat')
     
     os.chdir(path_vbox_dir)
-    shutil.copy(path_main_dir+'/script/LocalConfig.kmk', path_vbox_dir)
+    shutil.copy(f'{path_main_dir}/script/LocalConfig.kmk', path_vbox_dir)
     execute_batch_x32_inst('call env.bat\nkmk')
     
     os.chdir(path_vbox_dir+'/out/win.amd64/release/bin')
-    execute_batch_x32_inst('call SET PATH=%PATH%;'+path_main_dir+r'\curl\x64\nSET PATH=%PATH%;'+path_main_dir+r'\curl\x32\ncall comregister.cmd\nloadall.cmd\ncall SET PATH=%PATH%;'+path_main_dir+'\Qt\qt5-x64\bin\nVirtualBox.exe')
+    execute_batch_x32_inst(f'SET PATH=%PATH%;{path_main_dir}\\curl\\x64\nSET PATH=%PATH%;{path_main_dir}\\curl\\x32\ncall comregister.cmd\nloadall.cmd\nSET PATH=%PATH%;{path_main_dir}\\Qt\\qt5-x64\\bin\nVirtualBox.exe')
 
 main()
