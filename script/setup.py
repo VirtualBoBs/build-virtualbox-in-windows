@@ -24,7 +24,7 @@ def is_admin():
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
 
-def createFolder(dir):
+def create_folder(dir):
     try:
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -83,13 +83,13 @@ def main():
     #print('[-] MinGW Directory')
     #createFolder(path_main_dir+'/MinGW')
     print('[-] SDL Directory')
-    createFolder(path_main_dir+'/SDL')
+    create_folder(path_main_dir+'/SDL')
     print('[-] SSL Directory')
-    createFolder(path_main_dir+'/SSL')
+    create_folder(path_main_dir+'/SSL')
     print('[-] curl Directory')
-    createFolder(path_main_dir+'/curl')
+    create_folder(path_main_dir+'/curl')
     print('[-] Qt Directory')
-    createFolder(path_main_dir+'/Qt')
+    create_folder(path_main_dir+'/Qt')
     print('[+] Making Directories Done')
 
     # Installation Part
