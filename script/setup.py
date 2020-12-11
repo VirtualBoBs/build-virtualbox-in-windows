@@ -108,8 +108,8 @@ def main():
     
     # Execution Part
     os.chdir(f'{path_main_dir}/script')
-    execute_batch_x32('buildx32.bat')
-    execute_batch_x64('buildx64.bat')
+    execute_batch_x32('build_x32.bat')
+    execute_batch_x64('build_x64.bat')
     
     os.chdir(f'{path_main_dir}/Qt/qt-everywhere-opensource-src-5.6.3')
     execute_batch_x64_inst('nmake\nnmake install')
