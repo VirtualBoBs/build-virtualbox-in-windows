@@ -16,5 +16,3 @@ certmgr.exe -add mytestcert.cer -s -r localMachine root
 certmgr.exe -add mytestcert.cer -s -r localMachine trustedpublisher
 
 echo [+]Certification Job Finished
-
-echo [+]build4.bat finished. Run build5.bat with Visual Studio Command Prompt (2010) Administrator.
