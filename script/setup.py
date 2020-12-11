@@ -1,4 +1,4 @@
-url_mingw       = r'https://jaist.dl.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v8.0.0.zip'
+url_mingw       = r'https://jaist.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/rubenvb/gcc-4.5-release/x86_64-w64-mingw32-gcc-4.5.4-release-win64_rubenvb.7z'
 url_sdl         = r'http://www.libsdl.org/release/SDL-devel-1.2.15-VC.zip'
 url_sslx64      = r'https://slproweb.com/download/Win64OpenSSL-1_1_1h.exe'
 url_sslx32      = r'https://slproweb.com/download/Win32OpenSSL-1_1_1h.exe'
@@ -8,7 +8,8 @@ url_vbox        = r'https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox
 
 path_prompt_x32 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"'
 path_prompt_x64 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"'
-path_main_dir = r'C:\VBoxCompile'
+path_main_dir   = r'C:\VBoxCompile'
+path_vbox_dir   = r'C:\VBoxCompile\VirtualBox-6.1.16' # you should install this first and input directory.
 
 import subprocess
 from urllib import request
@@ -83,42 +84,41 @@ def main():
     print('[+] Install Required Programs')
     print('[-] Install MinGW')
     extract_to(url_mingw, path_main_dir+'/MinGW')
-
+    
     print('[-] Install SDL')
-    extract_to(url_sdl, './')
-    shutil.copytree('./include',path_main_dir+'/SDL/include')
-    shutil.copytree('./lib/x64',path_main_dir+'/SDL/lib')
+    extract_to(url_sdl, path_main_dir+'/SDL')
+    shutil.copytree(path_main_dir+'/SDL/SDL-1.2.15/include',path_main_dir+'/SDL/include')
+    shutil.copytree(path_main_dir+'/SDL/SDL-1.2.15/lib/x64',path_main_dir+'/SDL/lib')
 
     print('[-] Install SSLs')
     # you should run url_sslx64,x32 before these command starts
-    shutil.copytree('C:/Program Files/OpenSSL-Win64',path_main_dir+'/SSL/x64')
-    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32',path_main_dir+'/SSL/x32')
+    shutil.copytree('C:/Program Files/OpenSSL-Win64',path_main_dir+'/SSL/OpenSSL-Win64')
+    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32',path_main_dir+'/SSL/OpenSSL-Win32')
 
     print('[-] Install cURL')
     extract_to(url_curl, path_main_dir+'/curl')
 
-    print('[-] Install qt5')
+    print('[-] Install qt5 (It will take a long long time. Be Patience.)')
     extract_to(url_qt5, path_main_dir+'/Qt')
-
-    print('[-] Install VirtualBox')
-    extract_to(url_vbox, path_main_dir)
-
+    print('[+] Install Required Programs Done')
+    
     # Execution Part
     os.chdir(path_main_dir+'/scripts')
     execute_batch_x32(r'buildx32.bat')
     execute_batch_x64(r'buildx64.bat')
+    
     os.chdir(path_main_dir+'/Qt/qt-everywhere-opensource-src-5.6.3')
-    execute_batch_x64_inst(r'nmake\n nmake install')
+    execute_batch_x64_inst(r'nmake')
+    execute_batch_x64_inst(r'nmake install')
     os.chdir(path_main_dir+'/scripts')
-    execute_batch_x32(r'build_driver.bat\n build_vbox.bat')
-    os.chdir(path_main_dir+'/VirtualBox-6.1.16')
-    execute_batch_x32_inst(r'env.bat\n kmk')
-    os.chdir(path_main_dir+'/VirtualBox-6.1.16/out/win.amd64/release/bin')
-    execute_batch_x32_inst(r'SET PATH=%PATH%;'+path_main_dir+r'\curl\x64 \n SET PATH=%PATH%;'+path_main_dir+r'\curl\x32')
-
-    # admin privillege needs
-    execute_batch_x32(r'comregister.cmd\n loadall.cmd')
-
-    execute_batch_x32(r'SET PATH=%PATH%;'+path_main_dir+r'\Qt\qt5-x64\bin \n VirtualBox.exe')
+    execute_batch_x32(r'build_driver.bat')
+    
+    execute_batch_x32(r'build_vbox.bat')
+    os.chdir(path_vbox_dir)
+    shutil.copy(path_main_dir+'/scripts/LocalConfig.kmk',path_vbox_dir)
+    execute_batch_x32_inst('call env.bat\nkmk')
+    
+    os.chdir(path_vbox_dir+'/out/win.amd64/release/bin')
+    execute_batch_x32_inst('call SET PATH=%PATH%;'+path_main_dir+r'\curl\x64\nSET PATH=%PATH%;'+path_main_dir+r'\curl\x32\ncall comregister.cmd\nloadall.cmd\ncall SET PATH=%PATH%;'+path_main_dir+'\Qt\qt5-x64\bin\nVirtualBox.exe')
 
 main()
