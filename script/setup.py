@@ -13,6 +13,10 @@ def main():
         print('[*] Error: Please run this script on the root privilege')
         exit(1)
 
+    if is_test_mode() == False:
+        print('[*] Error: Please run this script on the test mode')
+        exit(1)
+
     # Create directories
     print('[+] Create directories')
     create_folder(f'{path_main_dir}/MinGW')

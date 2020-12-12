@@ -19,6 +19,23 @@ def is_admin():
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
 
+def is_test_mode():
+    l = 'bcdedit /v'.split(' ')
+    key = 'testsigning'
+
+    process = Popen(l, stdout=PIPE)
+    (output, err) = process.communicate()
+    
+    output = str(output)
+
+    idx = output.find(key)
+    if idx == -1:
+        is_test_mode = False
+    else:
+        output = output[output.find(key) + len(key) + 1:]
+        is_test_mode = output.startswith('Yes')
+    return is_test_mode
+
 def create_folder(dir):
     if not os.path.exists(dir):
         try:
