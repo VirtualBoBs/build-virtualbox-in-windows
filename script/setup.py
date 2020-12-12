@@ -1,3 +1,4 @@
+url_7za         = r'https://www.7-zip.org/a/7za920.zip'
 url_mingw       = r'https://jaist.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/rubenvb/gcc-4.5-release/x86_64-w64-mingw32-gcc-4.5.4-release-win64_rubenvb.7z'
 url_sdl         = r'http://www.libsdl.org/release/SDL-devel-1.2.15-VC.zip'
 url_sslx64      = r'https://slproweb.com/download/Win64OpenSSL-1_1_1h.exe'
@@ -19,6 +20,7 @@ def main():
 
     # Create directories
     print('[+] Create directories')
+    create_folder(f'{path_main_dir}/7za')
     create_folder(f'{path_main_dir}/MinGW')
     create_folder(f'{path_main_dir}/SDL')
     create_folder(f'{path_main_dir}/SSL')
@@ -30,8 +32,10 @@ def main():
     print('[-] Copy SSL')
     shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
     shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
+    print('[-] Download 7za')
+    extract_to(url_7za, f'{path_main_dir}/7za')
     print('[-] Download MinGW')
-    extract_to(url_mingw, f'{path_main_dir}/MinGW', is_7z = True)
+    extract_to(url_mingw, '../bin/MinGW', f'{path_main_dir}/7za/7za x <temp> -o<path>')
     print('[-] Download SDL')
     extract_to(url_sdl, f'{path_main_dir}/SDL')
     shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')

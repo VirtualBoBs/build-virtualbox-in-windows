@@ -3,8 +3,7 @@ from urllib import request
 import zipfile
 import os, shutil
 import ctypes
-import py7zr
-import pyunpack # it needs patool
+from subprocess import Popen, PIPE
 
 path_prompt_x32 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"'
 path_prompt_x64 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"'
@@ -50,15 +49,14 @@ def generate_temp_file_name():
 def generate_temp_bat_name():
     return 'temp.bat'
 
-def extract_to(url, path, is_7z = False):
+def extract_to(url, path, instruction = None):
     temp_path = generate_temp_file_name()
     request.urlretrieve(url, temp_path)
 
-    if is_7z:
-        #pyunpack.Archive(temp_path).extractall(path)
-        f = py7zr.SevenZipFile(temp_path)
-        f.extractall(path)
-        f.close()
+    if instruction != None:
+        instruction = instruction.replace('<temp>', temp_path)
+        instruction = instruction.replace('<path>', path)
+        subprocess.call(instruction.split(' '), stdout=subprocess.DEVNULL)
     else:
         f = zipfile.ZipFile(temp_path)
         f.extractall(path)
