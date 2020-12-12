@@ -18,30 +18,27 @@ def main():
         print('[*] Error: Please run this script on the test mode')
         exit(1)
 
-    # Create directories
-    print('[+] Create directories')
-    create_folder(f'{path_main_dir}/7za')
-    create_folder(f'{path_main_dir}/MinGW')
-    create_folder(f'{path_main_dir}/SDL')
-    create_folder(f'{path_main_dir}/SSL')
-    create_folder(f'{path_main_dir}/curl')
-    create_folder(f'{path_main_dir}/Qt')
-
     # Download pre-requisites
     print('[+] Set up libraries')
+    if create_folder(f'{path_main_dir}/SSL') == False:
     print('[-] Copy SSL')
     shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
     shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
+    if create_folder(f'{path_main_dir}/7za') == False:
     print('[-] Download 7za')
     extract_to(url_7za, f'{path_main_dir}/7za')
+    if create_folder(f'{path_main_dir}/MinGW') == False:
     print('[-] Download MinGW')
     extract_to(url_mingw, '../bin/MinGW', f'{path_main_dir}/7za/7za x <temp> -o<path>')
+    if create_folder(f'{path_main_dir}/SDL') == False:
     print('[-] Download SDL')
     extract_to(url_sdl, f'{path_main_dir}/SDL')
     shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')
     shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/lib/x64', f'{path_main_dir}/SDL/lib')
+    if create_folder(f'{path_main_dir}/curl') == False:
     print('[-] Download cURL')
     extract_to(url_curl, f'{path_main_dir}/curl')
+    if create_folder(f'{path_main_dir}/Qt') == False:
     print('[-] Download Qt5')
     extract_to(url_qt5, f'{path_main_dir}/Qt')
     
