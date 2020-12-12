@@ -35,6 +35,7 @@ def is_test_mode():
         is_test_mode = output.startswith('Yes')
     return is_test_mode
 
+# Return false when the directory already exists.
 def create_folder(dir):
     if not os.path.exists(dir):
         try:
@@ -42,6 +43,8 @@ def create_folder(dir):
         except OSError:
             print(f'[*] Error: Could not create the directory {dir}')
             exit(1)
+        return True
+    return False
 
 def generate_temp_file_name():
     return 'temp.bin'
