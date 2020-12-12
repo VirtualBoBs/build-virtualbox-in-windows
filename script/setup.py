@@ -40,10 +40,7 @@ def main():
     extract_to(url_curl, f'{path_main_dir}/curl')
     if create_folder(f'{path_main_dir}/Qt'):
     print('[-] Download Qt5')
-        try:
         extract_to(url_qt5, '../bin/Qt')
-        except:
-            pass # does not matter if an error occurs. irrelevant to our interest.
     
     # Run batch scripts
     os.chdir(path_curr_dir)

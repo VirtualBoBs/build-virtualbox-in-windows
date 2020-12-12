@@ -56,14 +56,27 @@ def extract_to(url, path, instruction = None):
     temp_path = generate_temp_file_name()
     request.urlretrieve(url, temp_path)
 
-    if instruction != None:
+    if instruction == None:
+        def winapi_path(dos_path, encoding=None):
+            path = os.path.abspath(dos_path)
+            if path.startswith("\\\\"):
+                path = "\\\\?\\UNC\\" + path[2:]
+            else:
+                path = "\\\\?\\" + path 
+            return path
+
+        class ZipFileLongPaths(zipfile.ZipFile):
+            def _extract_member(self, member, targetpath, pwd):
+                targetpath = winapi_path(targetpath)
+                return zipfile.ZipFile._extract_member(self, member, targetpath, pwd)
+        
+        with ZipFileLongPaths(temp_path) as f:
+            f.extractall(path)
+    else:
         instruction = instruction.replace('<temp>', temp_path)
         instruction = instruction.replace('<path>', path)
+        
         subprocess.call(instruction.split(' '), stdout=subprocess.DEVNULL)
-    else:
-        f = zipfile.ZipFile(temp_path)
-        f.extractall(path)
-        f.close()
     
     os.remove(temp_path)
 
