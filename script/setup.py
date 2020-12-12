@@ -71,4 +71,5 @@ def main():
     # Execute VBox
     # execute_batch_x32_inst(f'SET PATH=%PATH%;{path_main_dir}\\Qt\\qt5-x64\\bin\nVirtualBox.exe')
 
+if __name__ == '__main__':
 main()
