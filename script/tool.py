@@ -21,7 +21,7 @@ def is_admin():
 
 def is_test_mode():
     l = 'bcdedit /v'.split(' ')
-    key = 'testsigning'
+    key = 'testsigning             '
 
     process = Popen(l, stdout=PIPE)
     (output, err) = process.communicate()
@@ -32,7 +32,7 @@ def is_test_mode():
     if idx == -1:
         is_test_mode = False
     else:
-        output = output[output.find(key) + len(key) + 1:]
+        output = output[output.find(key) + len(key):]
         is_test_mode = output.startswith('Yes')
     return is_test_mode
 
