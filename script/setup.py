@@ -19,6 +19,7 @@ def main():
         exit(1)
     if os.path.exists(path_vbox_dir) == False:
         print(f'[*] Error: Please copy to {path_vbox_dir} the source of VirtualBox to compile')
+        exit(1)
 
     # Download pre-requisites
     print('[+] Set up libraries')
