@@ -17,6 +17,8 @@ def main():
     if is_test_mode() == False:
         print('[*] Error: Please run this script on the test mode')
         exit(1)
+    if os.path.exists(path_vbox_dir) == False:
+        print(f'[*] Error: Please copy to {path_vbox_dir} the source of VirtualBox to compile')
 
     # Download pre-requisites
     print('[+] Set up libraries')
