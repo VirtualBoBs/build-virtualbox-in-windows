@@ -5,15 +5,6 @@ SET WINDDK_DIR=C:\WinDDK\7600.16385.1\bin\amd64
 
 SET DEFAULT_DIR=C:\VBoxBuild
 
-rem // Save current directory and change to target directory
-pushd %DEFAULT_DIR%
-
-rem // Save value of CD variable (current directory)
-set DEFAULT_PATH=%CD%
-
-rem // Restore original directory
-popd
-
 SET MINGW_DIR=%DEFAULT_DIR%\MinGW\mingw64
 SET SDL_DIR=%DEFAULT_DIR%\SDL
 SET SSL64_DIR=%DEFAULT_DIR%\SSL\OpenSSL-Win64
