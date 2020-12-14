@@ -3,7 +3,7 @@
 SET VS2010VC_DIR=C:\Program Files (x86)\Microsoft Visual Studio 10.0
 SET WINDDK_DIR=C:\WinDDK\7600.16385.1\bin\amd64
 
-SET DEFAULT_DIR=%cd%\..\bin
+SET DEFAULT_DIR=C:\VBoxBuild
 
 rem // Save current directory and change to target directory
 pushd %DEFAULT_DIR%

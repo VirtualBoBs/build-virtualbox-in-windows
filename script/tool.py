@@ -8,8 +8,9 @@ from subprocess import Popen, PIPE
 path_prompt_x32 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\vcvars32.bat"'
 path_prompt_x64 = r'C:\"Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64\vcvars64.bat"'
 
-def get_working_path():
-    return os.path.dirname(os.path.abspath(__file__))
+path_curr_dir   = os.path.dirname(os.path.abspath(__file__))
+path_main_dir   = r'C:\VBoxBuild'                   #os.path.abspath(f'{path_curr_dir}/../bin')
+path_vbox_dir   = path_main_dir + r'\VirtualBox'    #os.path.abspath(f'{path_main_dir}/VirtualBox')
 
 def is_admin():
     try:
@@ -60,7 +61,7 @@ def extract_to(url, path, internal = False):
         with zipfile.ZipFile(temp_path) as f:
             f.extractall(path)
     else:
-        unzip_path = os.path.abspath('../bin/7za/7za')
+        unzip_path = os.path.abspath(f'{path_main_dir}/7za/7za')
         instruction = f'{unzip_path} x {temp_path} -o{path}'
         os.system(instruction)
     
@@ -87,7 +88,3 @@ def execute_batch_x64_inst(inst):
 
 def execute_batch_x64(path):
     execute_batch_x64_inst(f'call {path}')
-
-path_curr_dir   = get_working_path()
-path_main_dir   = os.path.abspath(f'{path_curr_dir}/../bin')
-path_vbox_dir   = os.path.abspath(f'{path_main_dir}/VirtualBox')

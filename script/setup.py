@@ -32,7 +32,7 @@ def main():
         extract_to(url_7za, f'{path_main_dir}/7za', True)
     if create_folder(f'{path_main_dir}/MinGW'):
     print('[-] Download MinGW')
-        extract_to(url_mingw, '../bin/MinGW')
+        extract_to(url_mingw, f'{path_main_dir}/MinGW')
     if create_folder(f'{path_main_dir}/SDL'):
     print('[-] Download SDL')
     extract_to(url_sdl, f'{path_main_dir}/SDL')
