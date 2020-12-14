@@ -54,6 +54,12 @@ def main():
     
     os.chdir(path_curr_dir)
     # Register certification
+    flag = True
+    if os.path.exists('mytestcert.cer'):
+        yesno = input("[Q] The certification for drivers already exists. If you create a new certification, it might lead to some conflictions. Do you want to skip? (y)").lower()
+        if yesno == 'y':
+            flag = False
+    if flag:
     execute_batch_x32('build_driver.bat')
 
     # Configure VBox build
