@@ -52,31 +52,17 @@ def generate_temp_file_name():
 def generate_temp_bat_name():
     return 'temp.bat'
 
-def extract_to(url, path, instruction = None):
+def extract_to(url, path, internal = False):
     temp_path = generate_temp_file_name()
     request.urlretrieve(url, temp_path)
 
-    if instruction == None:
-        def winapi_path(dos_path, encoding=None):
-            path = os.path.abspath(dos_path)
-            if path.startswith("\\\\"):
-                path = "\\\\?\\UNC\\" + path[2:]
-            else:
-                path = "\\\\?\\" + path 
-            return path
-
-        class ZipFileLongPaths(zipfile.ZipFile):
-            def _extract_member(self, member, targetpath, pwd):
-                targetpath = winapi_path(targetpath)
-                return zipfile.ZipFile._extract_member(self, member, targetpath, pwd)
-        
-        with ZipFileLongPaths(temp_path) as f:
+    if internal:
+        with zipfile.ZipFile(temp_path) as f:
             f.extractall(path)
     else:
-        instruction = instruction.replace('<temp>', temp_path)
-        instruction = instruction.replace('<path>', path)
-        
-        subprocess.call(instruction.split(' '), stdout=subprocess.DEVNULL)
+        unzip_path = os.path.abspath('../bin/7za/7za')
+        instruction = f'{unzip_path} x {temp_path} -o{path}'
+        os.system(instruction)
     
     os.remove(temp_path)
 
