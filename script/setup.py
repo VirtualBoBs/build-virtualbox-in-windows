@@ -24,25 +24,25 @@ def main():
     # Download pre-requisites
     print('[+] Set up libraries')
     if create_folder(f'{path_main_dir}/SSL'):
-    print('[-] Copy SSL')
-    shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
-    shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
+        print('[-] Copy SSL')
+        shutil.copytree('C:/Program Files/OpenSSL-Win64', f'{path_main_dir}/SSL/OpenSSL-Win64')
+        shutil.copytree('C:/Program Files (x86)/OpenSSL-Win32', f'{path_main_dir}/SSL/OpenSSL-Win32')
     if create_folder(f'{path_main_dir}/7za'):
-    print('[-] Download 7za')
+        print('[-] Download 7za')
         extract_to(url_7za, f'{path_main_dir}/7za', True)
     if create_folder(f'{path_main_dir}/MinGW'):
-    print('[-] Download MinGW')
+        print('[-] Download MinGW')
         extract_to(url_mingw, f'{path_main_dir}/MinGW')
     if create_folder(f'{path_main_dir}/SDL'):
-    print('[-] Download SDL')
-    extract_to(url_sdl, f'{path_main_dir}/SDL')
-    shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')
-    shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/lib/x64', f'{path_main_dir}/SDL/lib')
+        print('[-] Download SDL')
+        extract_to(url_sdl, f'{path_main_dir}/SDL')
+        shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/include', f'{path_main_dir}/SDL/include')
+        shutil.copytree(f'{path_main_dir}/SDL/SDL-1.2.15/lib/x64', f'{path_main_dir}/SDL/lib')
     if create_folder(f'{path_main_dir}/curl'):
-    print('[-] Download cURL')
-    extract_to(url_curl, f'{path_main_dir}/curl')
+        print('[-] Download cURL')
+        extract_to(url_curl, f'{path_main_dir}/curl')
     if create_folder(f'{path_main_dir}/Qt'):
-    print('[-] Download Qt5')
+        print('[-] Download Qt5')
         extract_to(url_qt5, f'{path_main_dir}/Qt')
     
     # Run batch scripts
@@ -61,7 +61,7 @@ def main():
         if yesno == 'y':
             flag = False
     if flag:
-    execute_batch_x32('build_driver.bat')
+        execute_batch_x32('build_driver.bat')
 
     # Configure VBox build
     execute_batch_x32('build_vbox.bat')
@@ -71,4 +71,4 @@ def main():
     shutil.copy(f'{path_curr_dir}/LocalConfig.kmk', path_vbox_dir)
 
 if __name__ == '__main__':
-main()
+    main()
