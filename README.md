@@ -29,7 +29,7 @@ To build VirtualBox via the scripts, you should follow the steps below.
 
 Before using the scripts, you need to install the followings.
 
-- Visual Studio 2010 (≥ **Professional**)
+- Visual Studio 2010 (Tested on **Professional**)
 - [Visual Studio 2010 SP1](https://kovepg.tistory.com/entry/비주얼-스튜디오-2010-서비스팩1Visual-Studio-2010-SP1-설치파일)
 - [WinSDK 7.1](https://www.microsoft.com/en-us/download/details.aspx?id=8279)
 - [WinSDK 8.1](https://developer.microsoft.com/ko-kr/windows/downloads/sdk-archive/)
@@ -101,6 +101,17 @@ C:\VBoxBuild\VirtualBox\out\win.amd64\release\bin\VirtualBox.exe
 
 The default setting provides disabled-hardening on the VirtualBox binary, so you can attach any kind of debugger on the running process of compiled VirtualBox.
 
+## FAQ
+
+### Q) I keep getting an error in `SignTool`: `Multiple certificates were found that meet all the given criteria.`
+
+A) Unfortunately, now our script does not handle multiple certificates being generated during the Setup step. You need to run it only once unlike the Build step. And here is the solution:
+
+1. Run `certmgr.msc`
+2. Delete **all the certificates** named `MyTestCertificate` in the `Certificates - Personal`
+3. Start from the Setup step.
+
+
 ## Bug Reporting
 
 We use Github Issue as its primary upstream bug tracker. Bugs found when running scripts should be reported via:
@@ -117,7 +128,7 @@ You can contact us via:
 - Use our common telepathy
 - Wish to God your genuine belief
 
-Or, just e-mail us.
+Or, well, just e-mail us :p
 
 ## License
 
