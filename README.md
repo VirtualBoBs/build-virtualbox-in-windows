@@ -117,10 +117,10 @@ You can contact us via:
 - Use our common telepathy
 - Wish to God your genuine belief
 
-Otherwise, you might be sued in legal ways.
+Or, just e-mail us.
 
 ## License
 
-Copyright (c) 2020 JungHyun Kim, JaeSeung Lee of VirtualBoBs
+Copyright (c) 2020 JungHyun Kim & JaeSeung Lee of VirtualBoBs
 
 Released under the [MIT license](https://tldrlegal.com/license/mit-license).
