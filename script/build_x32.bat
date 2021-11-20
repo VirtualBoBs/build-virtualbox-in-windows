@@ -7,10 +7,9 @@ echo [+] cURL
 echo [*] Make directories for cURL
 mkdir %DEFAULT_DIR%\curl\x64\include\curl
 mkdir %DEFAULT_DIR%\curl\x32\include\curl
-cd %CURL_DIR%
 
 echo [*] Build cURL x86
-cd /d winbuild
+cd /d %CURL_DIR%\winbuild
 nmake /f Makefile.vc mode=dll WITH_SSL=static DEBUG=no MACHINE=x86 SSL_PATH=%SSL32_DIR% ENABLE_SSPI=no ENABLE_WINSSL=no ENABLE_IDN=no
 
 echo [*] Move cURL x86 files
